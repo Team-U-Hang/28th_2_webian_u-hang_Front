@@ -8,8 +8,8 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    const [inputId, setInputId] = useState("")
-    const [inputPw, setInputPw] = useState("")
+    const [inputId, setInputId] = useState("");
+    const [inputPw, setInputPw] = useState("");
 
     const handleInputId = (e) => {
         setInputId(e.target.value)
@@ -20,7 +20,17 @@ const Register = () => {
     }
 
     const onClickLogin = () => {
-        console.log('click login')
+        e.preventDefault();
+
+        console.log('Id', inputId);
+        console.log('Pw', inputPw);
+
+        let body = {
+            id : inputId,
+            pw : inputPw,
+        }
+
+        dispatchEvent(loginUser(body));
     }
 
     const goToRegister = () => {
@@ -46,15 +56,15 @@ const Register = () => {
                 </div>
                 <div className="login_inputs">
                     <div className="login_input">
-                        <input type="text" placeholder="ID" /*value={inputId} onChange={handleInputId}*/ />
+                        <input type="text" placeholder="ID" value={inputId} onChange={handleInputId} />
                     </div>
                     <div className="login_input">
-                        <input type="text" placeholder="PW" /*value={inputPw}  onChange={handleInputPw}*//>
+                        <input type="text" placeholder="PW" value={inputPw}  onChange={handleInputPw}/>
                     </div>
 
                 </div>
                 <div className="login_submit-container">
-                    <button className="login_submit" /*onClick={onClickLogin}*/>로그인</button>
+                    <button className="login_submit" onClick={onClickLogin}>로그인</button>
                     <button  className="register" onClick={goToRegister}>회원가입</button>
                 </div>
 

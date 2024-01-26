@@ -84,6 +84,9 @@ const SearchBar = styled.form`
         font-weight: 600;
         outline: none;
     }
+    input::placeholder{
+        color: gray;
+    }
     input::-ms-clear, input::-ms-reveal{
         display: none;
     }

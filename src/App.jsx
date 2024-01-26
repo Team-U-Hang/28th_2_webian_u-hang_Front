@@ -5,15 +5,24 @@ import BoardGroup from "./pages/board-group"
 import Mypage from "./pages/mypage"
 import GroupEventSearch from "./pages/group-event-search"
 import PersonalEventSearch from "./pages/personal-event-search"
+import Login from "./pages/Group_Login"
+import Register from "./pages/Register"
 
 const router = createBrowserRouter([
+  {
+    path:"/login",
+    element: <Login/>
+  },
+  {
+    path:"/Register",
+    element: <Register/>
+  },
   {
     path: "/home",
     element: <Home/>
   },
   {
     path: "/board",
-    // element: <NavBar/>,
     children: [
       {
         path:"personal",

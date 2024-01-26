@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import './Group_Login.css'
 import logo from '../assets/logo.png'
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Login = () => {
 
     const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const Register = () => {
     }
 
     useEffect(() => {
-        axios.get('')
+        // axios.get('')
     },
     [])
     return (
@@ -73,4 +73,4 @@ const Register = () => {
     );
 }
 
-export default Register;
+export default Login;

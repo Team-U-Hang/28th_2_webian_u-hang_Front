@@ -1,9 +1,22 @@
+import EventDetail from "./pages/EventDetail"
+import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import EventRegister from "./pages/EventRegister";
+
+const router = createBrowserRouter([
+  
+  {
+    path:"/event-detail",
+    element: <EventDetail/>
+  },
+  {
+    path:"/event-register",
+    element: <EventRegister/>
+  }
+]);
+
 function App() {
   return (
-    <div>
-    <h1>hello</h1>
-    <h1>U-hang 입니다</h1>
-    </div>
+    <RouterProvider router={router}/>
   )
 }
 

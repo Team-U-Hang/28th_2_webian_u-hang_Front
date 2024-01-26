@@ -7,6 +7,8 @@ import GroupEventSearch from "./pages/group-event-search"
 import PersonalEventSearch from "./pages/personal-event-search"
 import Login from "./pages/Group_Login"
 import Register from "./pages/Register"
+import EventDetail from "./pages/EventDetail"
+import EventRegister from "./pages/EventRegister"
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
   {
     path:"/Register",
     element: <Register/>
+  },
+  {
+    path: "/event-detail",
+    element: <EventDetail/>
+  },
+  {
+    path: "/event-register",
+    element: <EventRegister/>
   },
   {
     path: "/home",

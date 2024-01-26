@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import {  AnimatePresence, motion, useTransform, useViewportScroll } from "framer-motion"
+import { motion, useTransform, useViewportScroll } from "framer-motion"
 import NavBar from "../components/navBar";
 import CardEvent from "../components/card-event";
 import CardReview from "../components/card-review";
 import COLOR from "../utils/color"
 import logo from '../assets/logo.png';
-import { Outlet, useOutlet } from "react-router-dom";
 
 
 const Wrapper = styled.div`

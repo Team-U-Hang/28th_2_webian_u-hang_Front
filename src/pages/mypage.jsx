@@ -2,6 +2,8 @@ import styled from "styled-components"
 import NavBar from "../components/navBar";
 import COLOR from "../utils/color";
 import myProfile from "../assets/MyProfile.png";
+import Mycalendar from "../components/Mycalendar";
+import Viewpage from "../pages/Viewpage";
 
 const Wrapper = styled.div`
     width: 99vw; //부모는 뷰포트 길이로 계산됨
@@ -80,6 +82,8 @@ export default function Mypage(){
             </Section1>
             <Section2>
                 <MyCalender>
+                    <Mycalendar/>
+                    {/* <Viewpage /> */}
                 </MyCalender>
                 <MyList>
                 </MyList>

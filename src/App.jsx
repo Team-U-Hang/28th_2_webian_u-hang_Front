@@ -9,6 +9,7 @@ import Login from "./pages/Group_Login"
 import Register from "./pages/Register"
 import EventDetail from "./pages/EventDetail"
 import EventRegister from "./pages/EventRegister"
+import Mycalendar from "./components/Mycalendar"
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home/>
+  },
+  {
+    path: "/calendar",
+    element: <Mycalendar/>
   },
   {
     path: "/board",

@@ -7,6 +7,7 @@ import MyEventList from "../components/MyEventList";
 import MyReviewList from "../components/MyReviewList";
 import InterestModal from "../components/InterestModal";
 import PermissionModal from "../components/PermissionModal";
+import Mycalendar from "../components/Mycalendar";
 
 const Wrapper = styled.div`
     width: 99vw; //부모는 뷰포트 길이로 계산됨
@@ -109,6 +110,8 @@ export default function Mypage(){
             </Section1>
             <Section2>
                 <MyCalender>
+                    <Mycalendar/>
+                    {/* <Viewpage /> */}
                 </MyCalender>
                 <MyList>
                     { toggle ? <MyEventList/> : <MyReviewList/>}

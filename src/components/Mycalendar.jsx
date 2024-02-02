@@ -4,15 +4,16 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import './Mycalendar.css';
 import moment from "moment";
-import { group_data } from "../groupData";
-import { personal_data } from "../personalData";
-import { useNavigate } from "react-router-dom";
+// import { group_data } from "../groupData";
+// import { personal_data } from "../personalData";
+// import { useNavigate } from "react-router-dom";
 
 function Mycalendar() {
     const [visible, setVisible] = useState(false);
     const [mark, setMark] = useState([]);
     const [value, onChange] = useState(new Date());
     const data = [
+        { 'date': "2024-01-15", 'title': '숙명여대' },
         { 'date': "2024-01-15", 'title': '치과예약' },
         { 'date': "2024-01-20", 'title': '사진예약' },
         { 'date': "2024-01-03", 'title': '아리가또' },
@@ -92,7 +93,17 @@ function Mycalendar() {
             {/* <div id="my-div" color="#305dfd">
                 치과예약
             </div> */}
-            {visible === true ? <div className="my-div">{mark_title[marks.findIndex((x) => x === moment(value).format("YYYY-MM-DD"))]}</div> : null}
+            {visible === true ? (
+                <div className="my-div">
+                    <h4 className="date-header">{moment(value).format("YYYY년 MM월 DD일")}</h4>
+                    {data
+                        .filter((item) => item.date === moment(value).format("YYYY-MM-DD"))
+                        .map((item, index) => (
+                            <p key={index}>{item.title}</p>
+                        ))}
+                </div>
+            ) : null}
+
 
         </div>
     )

@@ -8,10 +8,21 @@
     line-height: 0.5em;
 }
 
-/* .react-calendar__tile:enabled:hover, */
+.react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus,
 .react-calendar__tile--active {
-    background-color: #5F8062;
+    /* width: 20px;
+    height: 20px;
+    border-radius: 50%; */
+    background-color: transparent;
+    border-color: #5F8062;
+    outline-color: #5F8062;
+}
+
+.react-calendar__tile--active {
+    abbr {
+        color: #415843;
+    }
 }
 
 .react-calendar__navigation__arrow {
@@ -70,11 +81,15 @@
 }
 
 .react-calendar__tile--now {
-    color: #415843;
     abbr {
         color: red;
     }
-  }
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  color: #415843;
+}
 
 .react-calendar__navigation button {
     min-width: 44px;
@@ -84,9 +99,9 @@
     justify-content: center;
 }
 
-.react-calendar__navigation button:disabled {
+/* .react-calendar__navigation button:disabled {
     background-color: #f0f0f0;
-}
+} */
 
 .react-calendar__month-view__weekdays {
     text-align: center;
@@ -156,7 +171,7 @@
     color: #415843;
 }
 
-.my-div {
+/* .my-div {
     margin-top: 20px;
     width: 100%;
     padding-top: 10px;
@@ -165,7 +180,32 @@
     display: flex;
     flex-direction: column;
     background-color: #f1efe3cb;
+} */
+
+.my-div {
+    margin-top: 20px;
+    padding: 20px; /* Reduce the top and bottom padding */
+    background-color: #f1efe3cb;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.date-header {
+    margin: 0; /* Remove margin for the date header */
+    padding-bottom: 5px; /* Add a bit of padding below the date header */
+    font-size: 16px;
+    color: #203322;
+}
+
+.my-div p {
+    margin: 5px 0;
+    padding-left: 10px;
+    font-size: 16px;
+    color: #333;
+    border-left: 3px solid #5F8062;
+}
+
+
 
 .calendar-wrap {
     width: 100%;

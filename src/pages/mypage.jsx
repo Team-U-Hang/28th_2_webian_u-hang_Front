@@ -2,6 +2,11 @@ import styled from "styled-components"
 import NavBar from "../components/navBar";
 import COLOR from "../utils/color";
 import myProfile from "../assets/MyProfile.png";
+import { useEffect, useState } from "react";
+import MyEventList from "../components/MyEventList";
+import MyReviewList from "../components/MyReviewList";
+import InterestModal from "../components/InterestModal";
+import PermissionModal from "../components/PermissionModal";
 
 const Wrapper = styled.div`
     width: 99vw; //부모는 뷰포트 길이로 계산됨
@@ -64,11 +69,35 @@ const MyNav = styled.div`
     flex-direction: column;
     text-align: center;
     color: ${COLOR.green};
-    font-weight: 600;
-    font-size: 17px;
+    font-weight: 1000;
+    font-size: 1.1em;
+    label{
+        margin-top: 30%;
+        cursor: pointer;
+        &:hover{
+            color: #586e55d3;
+        }   
+    }
+    
 `;
 
 export default function Mypage(){
+
+    //이벤트 참여 목록 or 나의 후기 내역 보여줄지 제어하는 변수/함수
+    const [toggle, setToggle] = useState(true);
+
+    // '관심분야 설정' 모달창 제어하는 변수/함수
+    const [InModal, setInModal] = useState(false);
+    const toggleModal1 = () => {
+        setInModal(!InModal);
+    }
+
+    // '권한 설정' 모달창 제어하는 변수/함수
+    const [PerModal, setPerModal] = useState(false);
+    const toggleModal2 = () => {
+        setPerModal(!PerModal);
+    }
+
     return(
         <Wrapper>
             <NavBar/>
@@ -82,12 +111,15 @@ export default function Mypage(){
                 <MyCalender>
                 </MyCalender>
                 <MyList>
+                    { toggle ? <MyEventList/> : <MyReviewList/>}
+                    { InModal ? <InterestModal InModal={InModal} setInModal={setInModal} toggleModal1={toggleModal1}/> : ""}
+                    { PerModal ? <PermissionModal PerModal={PerModal} setPerModal={setPerModal} toggleModal2={toggleModal2}/> : ""}
                 </MyList>
-                <MyNav>
-                    <label htmlFor="">이벤트 참여 목록</label>
-                    <label htmlFor="">나의 후기 내역</label>
-                    <label htmlFor="">관심분야 설정</label>
-                    <label htmlFor="">권한 설정</label>
+                <MyNav id="myNav">
+                    <label onClick={() => {setToggle(true)}}>이벤트 참여 목록</label>
+                    <label onClick={() => {setToggle(false)}}>나의 후기 내역</label>
+                    <label onClick={toggleModal1}>관심분야 설정</label>
+                    <label onClick={toggleModal2}>단체 권한 신청</label>
                 </MyNav>
             </Section2>
         </Wrapper>

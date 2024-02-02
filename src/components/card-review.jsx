@@ -63,15 +63,32 @@ export default function CardReview(props){
             <div id="div1">
                 <img src={profile}/>
                 <div id="star">
-                    {[...Array(starNum)].map(() =>{
+                    <ReviewStar star={starNum} size={20}/>
+                    {/* {[...Array(starNum)].map(() =>{
                         return <FaStar size={20} color="#ffc107"/>;
                     })}
                     {[...Array(5-starNum)].map(() =>{
                         return <FaStar size={20} color="#b3b3b3"/>;
-                    })}
+                    })} */}
                 </div>
                 <text>{props.review}</text>
             </div>
         </Box>
     )
+}
+
+export function ReviewStar(props){
+    let starNum = props.star;
+    let starSize = props.size;
+    return(
+        <>
+            {[...Array(starNum)].map(() =>{
+                return <FaStar size={starSize} color="#ffc107"/>;
+            })}
+            {[...Array(5-starNum)].map(() =>{
+                return <FaStar size={starSize} color="#b3b3b3"/>;
+            })}
+        </>
+    )
+
 }

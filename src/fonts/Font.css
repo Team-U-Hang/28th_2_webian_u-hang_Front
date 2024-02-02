@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url("./GmarketSansTTFMedium.ttf") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansBold';
+    src: url("./GmarketSansTTFBold.ttf") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansLight';
+    src: url("./GmarketSansTTFLight.ttf") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('./SCDream3.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Regular';
+    src: url('./SCDream4.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Medium';
+    src: url('./SCDream5.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Bold';
+    src: url('./SCDream6.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

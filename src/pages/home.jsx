@@ -178,6 +178,8 @@ const Info = styled.div`
 
 export default function Home(){
 
+    console.log(localStorage.getItem("accessToken"))
+
     let [bestEvent, setBestEvent] = useState([
         {
             "group": "솔룩스",

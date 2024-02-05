@@ -1,4 +1,4 @@
-import {useParams} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import styled from "styled-components";
 import NavBar from "../components/navBar";
 import COLOR from "../utils/color";
@@ -15,8 +15,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     #paging{
-        height: 100px;
-        margin: auto;
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+        margin-bottom: 5%;
     }
 `;
 
@@ -51,9 +53,8 @@ const Section1 = styled.div`
 
     #buttonGroup{
         width: 300px;
-        position: absolute;
-        top: 70%;
-        right: 8%;
+        margin-left: 75%;
+        margin-bottom: auto;
         display: flex;
         gap: 15px;
         button{
@@ -182,6 +183,9 @@ const Section2 = styled.div`
 `;
 
 export default function GroupEventSearch() {
+
+    const navigate = useNavigate();
+
     const params = useParams();
 
     //백에서 검색어에 대한 결과 받아와서 events 배열에 저장
@@ -342,7 +346,7 @@ export default function GroupEventSearch() {
             </Section1>
             <Section2>
                 <div>
-                    <button>등록</button>
+                    <button onClick={()=>{navigate("/event-register")}}>등록</button>
                 </div>
                 <label id="word">
                     {events.length===0 ? `"${params.word}"에 대한 검색결과가 없습니다` : `"${params.word}"에 대한 검색결과 입니다`}
@@ -353,7 +357,7 @@ export default function GroupEventSearch() {
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
                                 )}
                                 </>
                             )

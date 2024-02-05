@@ -6,6 +6,7 @@ import EventCard from "../components/eventlist-card";
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
 import { personalData } from "../personalData";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -14,8 +15,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     #paging{
-        height: 100px;
-        margin: auto;
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+        margin-bottom: 5%;
     }
 `;
 
@@ -27,13 +30,12 @@ const Section1 = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     #whiteBox{
         background-color: #F9F8FA;
         width: 80%;
         height: 200px;
-        margin: auto;
         border-radius: 10px;
-        /* position: relative; */
         display: flex;
         #searchBox{
             width: 95%;
@@ -42,12 +44,10 @@ const Section1 = styled.div`
             display: flex;
         }
     }
-
     #buttonGroup{
         width: 300px;
-        position: absolute;
-        top: 60%;
-        right: 0%;
+        margin-left: 80%;
+        margin-top: 3%;
         display: flex;
         gap: 15px;
         select{
@@ -146,6 +146,8 @@ const Section2 = styled.div`
 
 export default function BoardPersonal(){
 
+    const navigate = useNavigate();
+
     let [events, setEvents] = useState(personalData.sort(function(a,b){
         if(parseInt(a.id) > parseInt(b.id)){
             return b.id-a.id;
@@ -226,7 +228,7 @@ export default function BoardPersonal(){
             </Section1>
             <Section2>
                 <div>
-                    <button>등록</button>
+                    <button onClick={()=>{navigate("/event-register")}}>등록</button>
                 </div>
                 <label id="word">
                     {events.length===0 ? `해당하는 이벤트가 없습니다` : ``}
@@ -237,7 +239,7 @@ export default function BoardPersonal(){
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
                                 )}
                                 </>
                             )

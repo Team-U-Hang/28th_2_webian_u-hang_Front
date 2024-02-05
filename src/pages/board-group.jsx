@@ -6,7 +6,7 @@ import EventCard from "../components/eventlist-card";
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
 import { data } from "../groupData";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -15,8 +15,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     #paging{
-        height: 100px;
-        margin: auto;
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+        margin-bottom: 5%;
     }
 `;
 
@@ -51,9 +53,8 @@ const Section1 = styled.div`
 
     #buttonGroup{
         width: 300px;
-        position: absolute;
-        top: 70%;
-        right: 8%;
+        margin-left: 75%;
+        margin-bottom: auto;
         display: flex;
         gap: 15px;
         button{
@@ -144,7 +145,7 @@ const CheckBox = styled.input`
 
 const Section2 = styled.div`
     background-color: ${COLOR.white};
-    width: 100%;
+    width: 100vw;
     height: 1100px;
     position: relative;
     display: flex;
@@ -192,6 +193,8 @@ const Section2 = styled.div`
 `;
 
 export default function BoardGroup(){
+
+    const navigate = useNavigate();
 
     // 이벤트 목록(백에서 받아와야 됨)
     // id가 큰 순으로 정렬(최신순 정렬)
@@ -254,7 +257,7 @@ export default function BoardGroup(){
     //필터링 기능을 위한 state
     const [currentCheck, setCurrentCheck] = useState([]); //체크된 항목들의 value값을 저장할 배열
     const [filteredEvents, setFilteredEvents] = useState(data);
-    const [myInterest] = useState([1]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
+    const [myInterest] = useState([3]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
     //체크박스 이벤트 처리 함수
     const onClickCheck = target => {
         if(currentCheck.includes(target)){ //currentCheck배열에 이미 있던 값이면 배열에서 삭제
@@ -275,6 +278,10 @@ export default function BoardGroup(){
     const myInterestFilter = interest => {
         let checkInterest;
         if(myInterestCheck.length===0){
+            if(myInterest.length===0){ //관심분야가 설정되어 있지 않다면
+                alert("관심분야가 설정되어 있지 않습니다. 마이페이지에서 설정해주세요.");
+                return
+            }
             checkInterest = interest;
             alert("나의 관심분야 필터가 적용되었습니다");
             setMyInterestCheck([...interest]);
@@ -357,7 +364,7 @@ export default function BoardGroup(){
             <Section2>
                 <div>
                     {
-                        auth === "group" ? <button>등록</button> : ""
+                        auth === "group" ? <button onClick={()=>{navigate("/event-register")}}>등록</button> : ""
                     }
                 </div>
                 <label id="word">
@@ -369,7 +376,7 @@ export default function BoardGroup(){
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
                                 )}
                                 </>
                             )

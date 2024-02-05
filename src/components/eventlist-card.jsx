@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import sookmyung from '../assets/sookmyung.jpg'
 import COLOR from "../utils/color";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
     background-color: white;
@@ -36,8 +37,11 @@ const Box = styled.div`
 `;
 
 export default function EventCard(props){
+
+    const navigate = useNavigate();
+
     return(
-        <Box>
+        <Box onClick={()=>{navigate("/event-detail/" + props.id)}}>
             <img src={sookmyung}/>
             <text id="text1">{props.writer}</text>
             <text id="title">{props.title}</text>

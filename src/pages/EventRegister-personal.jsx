@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const EventRegister = () => {
+const EventRegisterP = () => {
 
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const EventRegister = () => {
     '15': '미디어학부',
     '16': '동아리',
   };
-/* `
+/* 
   useEffect(() => {
     const registerAll = async() => {
       try{
@@ -159,7 +159,7 @@ const EventRegister = () => {
     /* registerAll(); */
     alert("데이터가 전송 완료되었습니다");
 
-    navigate('/event-detail', { state: { board } });
+    navigate('/event-detail-personal', { state: { board } });
  
   };
 
@@ -245,49 +245,11 @@ const EventRegister = () => {
     marginRight: groupImage ? '50px' : '0',
   };
   
-  const checkbox = {
-    margin: '3px 7px',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    cursor:'pointer'
-  };
-  
-  const CheckboxWrapper = styled.input`
-    cursor: pointer;
-    appearance: none;
-    width: 1.1rem;
-    height: 1.1rem;
-    background-color: #3A4D39;
-    border-radius: 0.1rem;
-
-    /* checked 상태일 때 스타일 */
-    &:checked {
-      background-color: #3A4D39;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-    }
-`;
-
-  
-  const allcheck = {
-    marginBottom: '1%',
-    padding: '0px 9%',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  };
-  
   const text = {
     fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center'
   };  
-
-  const text2 = {
-    color: 'grey',
-    paddingTop: '1%'
-  };
 
   const button = {
     backgroundColor: COLOR.beige,
@@ -396,31 +358,6 @@ const EventRegister = () => {
               </div>
             </div>
           </div>
-          <div style={{display:'flex'}}>
-            <span style={{text, margin: '1% 10px'}}>분야</span>
-            <span style={text2}>
-              해당하는 키워드를 모두 선택해주세요. ex) IT학회동아리 : 공과대학, 동아리
-            </span>
-            <br />
-          </div>
-          <div style={allcheck}>
-            {Object.entries(fieldIds).map(([fieldId, fieldName], index) => (
-              <React.Fragment key={fieldId}>
-                <label style={checkbox}>
-                  <CheckboxWrapper /* input */
-                    type="checkbox"
-                    name="groupField"
-                    value={fieldId}
-                    id={fieldId}
-                    checked={groupField.includes(fieldId)}
-                    onChange={onChange}
-                  />
-                  {fieldName}
-                </label>
-                {index % 9 === 8 && <br />}
-              </React.Fragment>
-            ))}
-          </div>
           <textarea
             name="groupContents"
             value={groupContents}
@@ -437,4 +374,4 @@ const EventRegister = () => {
   );
 };
 
-export default EventRegister;
+export default EventRegisterP;

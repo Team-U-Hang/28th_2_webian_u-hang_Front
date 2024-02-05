@@ -9,7 +9,7 @@ import Thumb from '../assets/thumb.png'
 import SookMyung from '../assets/sookmyung.jpg'
 import axios from "axios";
 
-const EventDetail = () => {
+const EventDetailP = () => {
 
   const [visible, setVisible] = useState(false); //글자 바뀌기용
   const [likeStatus, setLikeStatus] = useState(false); // 찜하기 여부 저장 변수
@@ -297,14 +297,6 @@ const handleLikeClick = () => {
     padding: '10px 20px',
     borderRadius: '10px',
   };
-  
-  const fieldItem = {
-    border: '1px solid black',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '8px',
-    padding: '3px 7px',
-    margin: '2px'
-  };
 
   const hover = {
     backgroundColor: COLOR.green,
@@ -390,15 +382,7 @@ const handleLikeClick = () => {
               <br />
               시간 &nbsp; {board.groupTime}<br />
               <br />
-              장소 &nbsp; {board.groupLocation}<br />
-              <br />
-              분야 &nbsp; {board.groupField.sort((a, b) => parseInt(a) - parseInt(b)) // id값이 작은 순서대로 정렬
-                          .map((fieldId, index) => (
-                  <span key={index} style={fieldItem}>
-                    {fieldIds[fieldId]}
-                  </span>
-              ))}<br />
-              
+              장소 &nbsp; {board.groupLocation}<br />              
               <button 
                 style={{...button, ...button2}} 
                 onClick={handleLikeClick}
@@ -543,4 +527,4 @@ const handleLikeClick = () => {
   );
 };
 
-export default EventDetail;
+export default EventDetailP;

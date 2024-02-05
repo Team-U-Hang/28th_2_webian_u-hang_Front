@@ -82,7 +82,7 @@
 
 .react-calendar__tile--now {
     abbr {
-        color: red;
+        color: #355638;
     }
 }
 
@@ -250,7 +250,7 @@
     /* margin-top: 5px; */
     height: 8px;
     width: 8px;
-    background-color: #f87171;
+    background-color: #5F8062;
     border-radius: 50%;
     display: flex;
     flex-direction: column;

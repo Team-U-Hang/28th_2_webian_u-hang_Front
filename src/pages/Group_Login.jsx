@@ -3,66 +3,64 @@ import './Group_Login.css'
 import logo from '../assets/logo.png'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
 
-    const JWT_EXPIRY_TIME = 24 * 3600 * 1000; // 만료 시간 (24시간 밀리 초로 표현)
-
-    onLogin = (email, password) => {
-        const data = {
-            email,
-            password,
-        };
-        axios.post('/login', data)
-            .then(onLoginSuccess)
-            .catch(error => {
-                // ... 에러 처리
-            });
-    }
-
-    onSilentRefresh = () => {
-        axios.post('/silent-refresh', data)
-            .then(onLoginSuccess)
-            .catch(error => {
-                // ... 로그인 실패 처리
-            });
-    }
-
-    onLoginSuccess = response => {
-        const { accessToken } = response.data;
-
-        // accessToken 설정
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-        // accessToken 만료하기 1분 전에 로그인 연장
-        setTimeout(onSilentRefresh, JWT_EXPIRRY_TIME - 60000);
-    }
-
     const navigate = useNavigate();
+    // const dispatch = useDispatch();
 
-    const [inputId, setInputId] = useState("");
+    const [inputEmail, setInputEmail] = useState("");
     const [inputPw, setInputPw] = useState("");
 
-    const handleInputId = (e) => {
-        setInputId(e.target.value)
+    const handleInputEmail = (e) => {
+        setInputEmail(e.target.value)
     }
 
     const handleInputPw = (e) => {
         setInputPw(e.target.value)
     }
 
-    const onClickLogin = () => {
-        e.preventDefault();
+    // const onSubmitHandler = (event) => {
+    //     event.preventDefault();
 
-        console.log('Id', inputId);
-        console.log('Pw', inputPw);
+    //     console.log(inputEmail);
+    //     console.log(inputPw);
 
-        let body = {
-            id: inputId,
-            pw: inputPw,
-        }
+    //     let body = {
+    //         memberEmail : inputEmail,
+    //         memberPw : inputPw,
+    //     }
 
-        dispatchEvent(loginUser(body));
+    //     dispatch()
+    // }
+
+    const onClickLogin = async (data) => {
+        return await axios.post("http://localhost:8080/log-in", {
+            memberEmail: inputEmail,
+            memberPw: inputPw,
+        })
+        .then((res) => {
+            console.log(res);
+            localStorage.setItem('accessToken', res.data.data.accessToken);
+            navigate("/home");
+        }).catch((error)=>{
+            console.log("inputEmail: " + inputEmail)
+            console.log("inputPw: " + inputPw)
+            console.log(error)
+        })
+
+        // e.preventDefault();
+
+        // console.log('Id', inputEmail);
+        // console.log('Pw', inputPw);
+
+        // let body = {
+        //     id: inputEmail,
+        //     pw: inputPw,
+        // }
+
+        // dispatchEvent(loginUser(body));
     }
 
     const goToRegister = () => {
@@ -88,7 +86,7 @@ const Login = () => {
                 </div>
                 <div className="login_inputs">
                     <div className="login_input">
-                        <input type="text" placeholder="ID" value={inputId} onChange={handleInputId} />
+                        <input type="text" placeholder="ID" value={inputEmail} onChange={handleInputEmail} />
                     </div>
                     <div className="login_input">
                         <input type="text" placeholder="PW" value={inputPw} onChange={handleInputPw} />

@@ -15,7 +15,7 @@ import EventDetailP from "./pages/EventDetail-personal"
 
 const router = createBrowserRouter([
   {
-    path:"/login",
+    path:"/",
     element: <Login/>
   },
   {

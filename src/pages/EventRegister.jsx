@@ -7,6 +7,28 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const SDatePicker = styled(DatePicker)`
+    width: 70%;
+    padding: 7%;
+    margin: 10% 0% 0% 5%;
+    border-radius: 5px;
+    border-color: #3A4D39;
+  `;
+
+const CheckboxWrapper = styled.input`
+  cursor: pointer;
+  appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  background-color: #3A4D39;
+  border-radius: 0.1rem;
+
+/* checked 상태일 때 스타일 */
+  &:checked {
+    background-color: #3A4D39;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+  }
+`;
 
 const EventRegister = () => {
 
@@ -29,29 +51,28 @@ const EventRegister = () => {
   const { groupTitle, groupPeriod, groupTime, groupLocation, groupField, groupContents, groupImage, groupUploadtime} = board;
 
   const fieldIds = { 
-    '1': '공과대학',
-    '2': '이과대학',
-    '3': '문과대학',
-    '4': '사회과학대학',
-    '5': '생활과학대학',
-    '6': '법과대학',
-    '7': '경상대학',
-    '8': '음악대학',
-    '9': '약학대학',
-    '10': '미술대학',
-    '11': '기초교양대학',
-    '12': '글로벌융합대학',
-    '13': '글로벌서비스학부',
-    '14': '영어영문학부',
-    '15': '미디어학부',
-    '16': '동아리',
+    1: '공과대학',
+    2: '이과대학',
+    3: '문과대학',
+    4: '사회과학대학',
+    5: '생활과학대학',
+    6: '법과대학',
+    7: '경상대학',
+    8: '음악대학',
+    9: '약학대학',
+    10: '미술대학',
+    11: '기초교양대학',
+    12: '글로벌융합대학',
+    13: '글로벌서비스학부',
+    14: '영어영문학부',
+    15: '미디어학부',
+    16: '동아리',
   };
-/* `
-  useEffect(() => {
-    const registerAll = async() => {
+
+     const registerAll = async() => {
       try{
         const response = await axios
-              .post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io' + "/event-register" + {
+              .post('http://localhost:8080/posting' , {
                 event_title: groupTitle,
                 event_time: groupTime,
                 event_date: groupPeriod,
@@ -69,22 +90,30 @@ const EventRegister = () => {
         console.log("error",error.response);
         alert('잘못됨');
       }
-    };
-    registerAll();
-  },[]);
-  */
+    }; 
+ 
   const onChange = (event) => {
     const { value, name, type, checked } = event.target;
 
     if (type === 'checkbox') {
-      const updatedFields = checked
-        ? [...groupField, value]
-        : groupField.filter((f) => f !== value);
+      const fieldId = parseInt(value, 10);
+
+
+      // 기존 체크 유무 확인
+      const isChecked = groupField.includes(fieldId);
+
+      // 체크되어 있으면 제거, 없으면 추가
+      const updatedFields = isChecked
+        ? groupField.filter((f) => f !== fieldId) 
+        : [...groupField, fieldId];
 
       setBoard({
         ...board,
         groupField: updatedFields,
       });
+
+      console.log('분야 상태:', updatedFields);
+
     } else {
       setBoard({
         ...board,
@@ -156,7 +185,7 @@ const EventRegister = () => {
 
     console.log('등록되었습니다.', board);
 
-    /* registerAll(); */
+    registerAll();
     alert("데이터가 전송 완료되었습니다");
 
     navigate('/event-detail', { state: { board } });
@@ -202,13 +231,7 @@ const EventRegister = () => {
     borderColor: COLOR.green
   };
   
-  const SDatePicker = styled(DatePicker)`
-    width: 70%;
-    padding: 7%;
-    margin: 10% 0% 0% 10%;
-    border-radius: 5px;
-    border-color: ${COLOR.green};
-  `
+  
 
   const input2 = {
     width: '100%',
@@ -253,20 +276,6 @@ const EventRegister = () => {
     cursor:'pointer'
   };
   
-  const CheckboxWrapper = styled.input`
-    cursor: pointer;
-    appearance: none;
-    width: 1.1rem;
-    height: 1.1rem;
-    background-color: #3A4D39;
-    border-radius: 0.1rem;
-
-    /* checked 상태일 때 스타일 */
-    &:checked {
-      background-color: #3A4D39;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-    }
-`;
 
   
   const allcheck = {
@@ -281,7 +290,7 @@ const EventRegister = () => {
   const text = {
     fontWeight: 'bold',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'baseline',
   };  
 
   const text2 = {
@@ -356,7 +365,7 @@ const EventRegister = () => {
               />
               </div>
               <div style={text}>
-              <span style={{marginLeft : '3%', paddingTop:'10%'}}>기간 &nbsp;</span>
+              <span style={{paddingLeft:'13px'}}>기간 &nbsp;</span>
               {/* <input 
                 type="text"
                 name="groupPeriod"
@@ -412,7 +421,7 @@ const EventRegister = () => {
                     name="groupField"
                     value={fieldId}
                     id={fieldId}
-                    checked={groupField.includes(fieldId)}
+                    checked={groupField.includes(parseInt(fieldId, 10))}
                     onChange={onChange}
                   />
                   {fieldName}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import COLOR from '../utils/color';
 import NavBar from "../components/navBar";
 import StarRating from '../components/StarRating';

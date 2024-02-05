@@ -33,7 +33,7 @@ const EventDetail = () => {
       const fetchData = async () => {
           try {
               const response = await axios
-                .get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/interest'+ "/event-detail/"/* +  {event_id}*/);
+                .get('http://localhost:8080/post' /*+  {event_id}*/);
 
               console.log('groupPeriod:', board.groupPeriod);
               console.log('groupUploadtime:', board.groupUploadtime);
@@ -67,17 +67,17 @@ const EventDetail = () => {
   const [review, setReview] = useState(); // 후기 입력 관리 변수_입력하고 등록할 때마다 초기화
   const [feedReviews, setFeedReviews] = useState([]); // 후기 목록 저장 변수_새로운 후기 계속 담김
   const [isValid, setIsValid] = useState(false); // 후기 유효 상태 확인 변수
-  const [reviewId, setReviewId] = useState(1); // 초기값은 1 //이것도..넘겨주시는건가..?
+/*   const [reviewId, setReviewId] = useState(1); // 초기값은 1 //이것도..넘겨주시는건가..? */
   
 
 
   //작성한 후기 전송
-    useEffect(() => {
+
       const regReview = async() => {
         try{
           const response = await axios
-            .post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io',{
-            review_id: reviewId,
+            .post('http://localhost:8080/post' /*+  {event_id} + '/postingReview' */,{
+            /* review_id: reviewId, */
             my_rev_text: review,
             my_rev_rate: userRating,
           });
@@ -88,15 +88,14 @@ const EventDetail = () => {
           alert('리뷰 등록X');
       }
     };
-    regReview();
-  })
+
 
   // 후기 목록 받기
-  useEffect(() => {
+  
     const reviewData = async () => {
       try {
         const response = await axios
-          .get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io'+ "/event-detail/"/* +  {event_id}*/);
+          .get('http://localhost:8080/post' /*+  {event_id} + '/gettingReview' */);
 
           setFeedReviews((prevReviews) => ({
             ...prevReviews,
@@ -108,24 +107,21 @@ const EventDetail = () => {
             console.error('후기 못 받음', error.response);
         }
     };
-    reviewData();
-  },[]);
+ 
 
 // 찜 여부 전송
-useEffect(() => {
   const sendLikeStatus = async (likestatus) => {
     try {
-      const response = await axios.post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io', {
-        event_id: board.groupId, 
-        is_register: likestatus,
-      });
+      const response = await axios
+        .post('http://localhost:8080/post' /*+  {event_id}*/, {
+          event_id: board.groupId, 
+          is_register: likestatus,
+        });
       console.log('찜 전송', response.data);
-    } catch (error) {
+    } catch (error) { 
       console.error('Error sending like status:', error.response);
     }
   };
-  sendLikeStatus();
-},[]);
 
 const handleLikeClick = () => {
   const newLikeStatus = !likeStatus;
@@ -146,14 +142,20 @@ const handleLikeClick = () => {
       text: review,
     };
 
+    //후기 등록
+    regReview();
+    
     setReviewId((prevId) => prevId + 1);
-
+  
     //기존 목록에 추가 + 추천수 0
     setFeedReviews(prevReviews => [...prevReviews, newReview]);
     setRecommends(prevRecommends => [
       ...prevRecommends,
       { count: 0 },
     ]);
+
+    //후기 목록 받아오기
+    reviewData();
 
     //추가 후 후기 및 별점 초기화
     setReview('');

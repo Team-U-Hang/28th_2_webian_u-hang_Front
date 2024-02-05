@@ -19,7 +19,7 @@ const Register = () => {
                 </div>
                 <div className="inputs">
                     <div className="input">
-                        <input type="text" placeholder="닉네임" />
+                        <input type="text" placeholder="학번" />
                     </div>
                     <div className="input">
                         <input

@@ -20,7 +20,6 @@ function Mycalendar() {
         { 'date': "2024-01-30", 'title': '챗지피티' },
     ];
     const marks = data.map(a => a.date);
-    const mark_title = data.map(a => a.title);
     // const scheduleArr = [
     //     { 'date': "230410", 'title': '치과 예약' },
     //     { 'date': "230411", 'title': '점심 약속' },

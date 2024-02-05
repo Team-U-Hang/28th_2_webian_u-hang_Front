@@ -6,7 +6,7 @@ import EventCard from "../components/eventlist-card";
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
 import { personalData } from "../personalData";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -15,8 +15,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     #paging{
-        height: 100px;
-        margin: auto;
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+        margin-bottom: 5%;
     }
 `;
 
@@ -28,13 +30,12 @@ const Section1 = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     #whiteBox{
         background-color: #F9F8FA;
         width: 80%;
         height: 200px;
-        margin: auto;
         border-radius: 10px;
-        /* position: relative; */
         display: flex;
         #searchBox{
             width: 95%;
@@ -46,9 +47,8 @@ const Section1 = styled.div`
 
     #buttonGroup{
         width: 300px;
-        position: absolute;
-        top: 60%;
-        right: 0%;
+        margin-left: 80%;
+        margin-top: 3%;
         display: flex;
         gap: 15px;
         select{
@@ -148,6 +148,7 @@ const Section2 = styled.div`
 export default function PersonalEventSearch(){
 
     const params = useParams();
+    const navigate = useNavigate();
 
     let [events, setEvents] = useState(personalData.filter((item)=>{
         return item.title.includes(params.word);
@@ -230,7 +231,7 @@ export default function PersonalEventSearch(){
             </Section1>
             <Section2>
                 <div>
-                    <button>등록</button>
+                    <button onClick={()=>{navigate("/event-register")}}>등록</button>
                 </div>
                 <label id="word">
                 {events.length===0 ? `"${params.word}"에 대한 검색결과가 없습니다` : `"${params.word}"에 대한 검색결과 입니다`}
@@ -241,7 +242,7 @@ export default function PersonalEventSearch(){
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
                                 )}
                                 </>
                             )

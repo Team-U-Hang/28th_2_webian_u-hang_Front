@@ -72,6 +72,7 @@ const MyNav = styled.div`
     color: ${COLOR.green};
     font-weight: 1000;
     font-size: 1.1em;
+    font-family: 'S-CoreDream-3Bold';
     label{
         margin-top: 30%;
         cursor: pointer;
@@ -79,7 +80,6 @@ const MyNav = styled.div`
             color: #586e55d3;
         }   
     }
-    
 `;
 
 export default function Mypage(){
@@ -98,6 +98,10 @@ export default function Mypage(){
     const toggleModal2 = () => {
         setPerModal(!PerModal);
     }
+
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[]);
 
     return(
         <Wrapper>

@@ -119,8 +119,6 @@ const GroupExplanation = styled.div`
     }
 `;
 
-//onChange={(e)=>{setWord(e.target.value)}}
-
 export default function PermissionModal(props){
 
     const modal = props.PerModal;

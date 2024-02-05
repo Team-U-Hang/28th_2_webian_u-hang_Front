@@ -51,7 +51,6 @@ const Login = () => {
         })
 
         // e.preventDefault();
-
         // console.log('Id', inputEmail);
         // console.log('Pw', inputPw);
 

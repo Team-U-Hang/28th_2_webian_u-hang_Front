@@ -185,7 +185,6 @@ const Section2 = styled.div`
 export default function GroupEventSearch() {
 
     const navigate = useNavigate();
-
     const params = useParams();
 
     //백에서 검색어에 대한 결과 받아와서 events 배열에 저장

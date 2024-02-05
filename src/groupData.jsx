@@ -2,7 +2,7 @@ export const data = [
     {
         "id": 1,
         "likes": 17,
-        "group": "1",
+        "group": "소프트웨어학부 학생회",
         "title": "소프트웨어인의 밤",
         "apply": "2024.12.08(목) ~",
         "period": "2024.12.17(수) ~",
@@ -11,7 +11,7 @@ export const data = [
     {
         "id": 2,
         "likes": 16,
-        "group": "2",
+        "group": "솔룩스",
         "title": "최종발표회",
         "apply": "2024.12.08(목) ~",
         "period": "2024.12.17(수) ~",
@@ -20,7 +20,7 @@ export const data = [
     {
         "id": 3,
         "likes": 15,
-        "group": "3",
+        "group": "공명",
         "title": "공과대학인의 밤",
         "apply": "2024.12.08(목) ~",
         "period": "2024.12.17(수) ~",

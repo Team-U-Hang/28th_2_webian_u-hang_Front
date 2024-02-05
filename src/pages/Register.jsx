@@ -6,8 +6,31 @@ import { Form, useNavigate } from "react-router-dom";
 
 const Register = () => {
 
+    // const [value, setValue] = useState({
+    //     memberEmail:'',
+    //     memberPw:'',
+    //     studNum:'',
+    // });
+
+    const [email, setEmail] = useState('');
+    const [pw, setPw] = useState('');
+    const [studNum, setStudNum] = useState('');
+
     const navigate = useNavigate();
-    
+
+    const onSubmit = async() =>{
+        await axios.post('http://localhost:8080/sign-up',{
+            memberEmail: email,
+            memberPw: pw,
+            studNum: studNum
+        })
+        .then(()=>{
+            navigate("/");
+        })
+        .catch((error) => {
+            console.log('An error occurred: ', error.response);
+        })
+    };
 
     return (
 
@@ -26,8 +49,9 @@ const Register = () => {
                         <input type="text"
                         placeholder="학번"
                         onChange={(e) => {
-                            setStdnum(e.target.value);
+                            setStudNum(e.target.value);
                         }} />
+                        <input type="text" placeholder="학번" onChange={(e)=>{setStudNum(e.target.value)}}/>
                     </div>
                     <div className="input">
                         <input
@@ -36,7 +60,7 @@ const Register = () => {
                             placeholder="이메일"
                             onChange={(e) => {
                                 setEmail(e.target.value);
-                            }} />
+                            }}/>
                     </div>
                     <div className="input">
                         <input
@@ -45,7 +69,7 @@ const Register = () => {
                             placeholder="비밀번호"
                             onChange={(e) => {
                                 setPw(e.target.value);
-                            }} />
+                            }}/>
                     </div>
                     <div className="input">
                         <input
@@ -55,7 +79,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div className="submit-container">
-                    <div className="submit" onClick={registeraxios}>회원가입</div>
+                    <div className="submit" onClick={onSubmit}>회원가입</div>
                 </div>
             </div>
 

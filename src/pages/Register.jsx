@@ -6,38 +6,6 @@ import { Form, useNavigate } from "react-router-dom";
 
 const Register = () => {
 
-    const [email, setEmail] = useState("");
-    const [stdnum, setStdnum] = useState("");
-    const [pw, setPw] = useState("");
-
-    const registeraxios = () => {
-        axios
-            .post('http://localhost:8080/sign-up', {
-                studNum : stdnum,
-                memberEmail : email,
-                memberPw : pw,
-            })
-            .then((res) => {
-                console.log(res);
-                alert("회원가입 성공");
-                navigate("/login");
-            }).catch((err) => {
-                console.log(err);
-            })
-    }
-
-    // const submit = async(values) => {
-    //     const {stdnum, email, pw} = values;
-    //     try {
-    //         await axios.post('http://localhost:8080/sign-up', {
-    //             email,
-    //             stdnum,
-    //             pw,
-    //         });
-            
-    //     }
-    // }
-
     const navigate = useNavigate();
     
 

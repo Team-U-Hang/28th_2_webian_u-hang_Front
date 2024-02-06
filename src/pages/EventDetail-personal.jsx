@@ -115,7 +115,7 @@ const EventDetailP = () => {
 useEffect(() => {
   const sendLikeStatus = async (likestatus) => {
     try {
-      const response = await axios.post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io', {
+      const response = await axios.post('http://localhost:8080/heart/post', {
         event_id: board.groupId, 
         is_register: likestatus,
       });

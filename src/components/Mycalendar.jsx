@@ -13,11 +13,11 @@ function Mycalendar() {
     const [mark, setMark] = useState([]);
     const [value, onChange] = useState(new Date());
     const data = [
-        { 'date': "2024-01-15", 'title': '숙명여대' },
-        { 'date': "2024-01-15", 'title': '치과예약' },
-        { 'date': "2024-01-20", 'title': '사진예약' },
-        { 'date': "2024-01-03", 'title': '아리가또' },
-        { 'date': "2024-01-30", 'title': '챗지피티' },
+        { 'date': "2024-02-07", 'title': '솔룩스 발표회' },
+        { 'date': "2024-02-15", 'title': '공과대학 OT' },
+        { 'date': "2024-02-15", 'title': '체육대회' },
+        { 'date': "2024-02-20", 'title': '소프트웨어인의 밤' },
+        { 'date': "2024-02-26", 'title': '예체능 모임' },
     ];
     const marks = data.map(a => a.date);
     // const scheduleArr = [

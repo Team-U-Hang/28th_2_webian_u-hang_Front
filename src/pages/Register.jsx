@@ -19,17 +19,18 @@ const Register = () => {
     const navigate = useNavigate();
 
     const onSubmit = async() =>{
-        await axios.post('http://localhost:8080/sign-up',{
-            memberEmail: email,
-            memberPw: pw,
-            studNum: studNum
-        })
-        .then(()=>{
-            navigate("/");
-        })
-        .catch((error) => {
-            console.log('An error occurred: ', error.response);
-        })
+        // await axios.post('http://localhost:8080/sign-up',{
+        //     memberEmail: email,
+        //     memberPw: pw,
+        //     studNum: studNum
+        // })
+        // .then(()=>{
+        //     navigate("/");
+        // })
+        // .catch((error) => {
+        //     console.log('An error occurred: ', error.response);
+        // })
+        navigate("/");
     };
 
     return (
@@ -51,7 +52,6 @@ const Register = () => {
                         onChange={(e) => {
                             setStudNum(e.target.value);
                         }} />
-                        <input type="text" placeholder="학번" onChange={(e)=>{setStudNum(e.target.value)}}/>
                     </div>
                     <div className="input">
                         <input

@@ -12,6 +12,7 @@ import EventRegister from "./pages/EventRegister"
 import Mycalendar from "./components/Mycalendar"
 import EventRegisterP from "./pages/EventRegister-personal"
 import EventDetailP from "./pages/EventDetail-personal"
+import Event from "./pages/Event"
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/event-detail-personal",
     element: <EventDetailP/>
+  },
+  {
+    path : "/event",
+    element: <Event/>
   },
   {
     path: "/event-register",

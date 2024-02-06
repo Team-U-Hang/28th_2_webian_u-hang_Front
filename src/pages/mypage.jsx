@@ -109,7 +109,7 @@ export default function Mypage(){
             <Section1>
                 <MyInfo>
                     <img src={myProfile}/>
-                    <label>익명</label>
+                    <label>2411111 님</label>
                 </MyInfo>
             </Section1>
             <Section2>

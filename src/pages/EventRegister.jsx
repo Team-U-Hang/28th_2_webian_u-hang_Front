@@ -68,7 +68,7 @@ const EventRegister = () => {
     16: '동아리',
   };
 
-  const registerAll = async () => {
+ /*  const registerAll = async () => {
 
     const accessToken = localStorage.getItem('accessToken')
         const headers = {
@@ -88,13 +88,13 @@ const EventRegister = () => {
       }, {headers})
       .then((res)=>{
          console.log('Post sent', res.data);
-         navigate(`/event-detail/${res.data}`)
+         navigate('/event-detail')
       })
       
       .catch((error) => {
       console.error('Error', error);
     })
-  };
+  }; */
 
   const onChange = (event) => {
     const { value, name, type, checked } = event.target;
@@ -188,9 +188,10 @@ const EventRegister = () => {
 
     console.log('등록되었습니다.', board);
 
-    registerAll();
+    /* registerAll(board); */
     alert("데이터가 전송 완료되었습니다");
-    navigate('/event-detail');
+
+    navigate('/event-detail', { state: { board } });
  
   };
 

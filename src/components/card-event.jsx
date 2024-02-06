@@ -39,8 +39,8 @@ export default function CardEvent(props){
             <img src={sookmyung}/>
             <text id="text1">{props.group}</text>
             <text id="title">{props.title}</text>
-            <text id="text2">신청: {props.apply}</text>
-            <text id="text2">운영: {props.period}</text>
+            <text id="text2">날짜: {props.apply}</text>
+            <text id="text2">시간: {props.period}</text>
         </Box>
     )
 }

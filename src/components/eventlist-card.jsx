@@ -25,13 +25,20 @@ const Box = styled.div`
     #text1{
         font-size: 15px;
         font-weight: 600;
-        color: ${COLOR.green};
+        color: #f37725;
     }
     #title{
+        margin-top: 3%;
+        display: block;
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-size: 20px;
         font-weight: 600;
     }
     #text2{
+        margin-top: 3%;
         font-size: 13px;
     }
 `;
@@ -43,10 +50,10 @@ export default function EventCard(props){
     return(
         <Box onClick={()=>{navigate("/event-detail/" + props.id)}}>
             <img src={sookmyung}/>
-            <text id="text1">{props.writer}</text>
+            <text id="text1">{props.id}</text>
             <text id="title">{props.title}</text>
-            <text id="text2">신청: {props.apply}</text>
-            <text id="text2">운영: {props.period}</text>
+            <text id="text2">날짜: {props.apply}</text>
+            <text id="text2">장소: {props.period}</text>
         </Box>
     )
 }

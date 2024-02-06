@@ -394,7 +394,7 @@ const handleLikeClick = () => {
                 {likeStatus ? "찜취소" : "찜하기"}
               </button>
               <div style={{display:'column', color: 'grey', fontSize: '14px', marginTop: '10px', justifyContent: 'flex-end'}}>
-              {uploadTime}
+              {/* {uploadTime} */}
               </div>
             </div>
           </div>

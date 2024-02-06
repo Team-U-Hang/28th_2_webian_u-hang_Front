@@ -182,29 +182,29 @@ export default function Home(){
 
     let [bestEvent, setBestEvent] = useState([
         {
-            "group": "솔룩스",
+            "group": "명신관 418호",
             "title": "최종 발표회",
-            "apply": "2024.01.18(목) ~",
-            "period": "2024.02.07(수) ~"
+            "apply": "2024.02.07",
+            "period": "14 : 00"
         },
         {
-            "group": "공명",
+            "group": "학생회관",
             "title": "공과대학인의 날",
-            "apply": "2024.02.18(목) ~",
-            "period": "2024.02.28(수) ~"
+            "apply": "2024.02.18",
+            "period": "12 : 00"
         },
         {
-            "group": "소프트웨어학부",
+            "group": "명신관 317호",
             "title": "소프트웨어인의 밤",
-            "apply": "2024.12.08(목) ~",
-            "period": "2024.12.17(수) ~"
+            "apply": "2024.12.08",
+            "period": "17 : 00"
         }]
     );
     let [bestReview, setBestReview] = useState([
         {
             "group": "솔룩스",
             "title": "최종 발표회",
-            "star": 3,
+            "star": 5,
             "review" : "좋은 시간이었습니다!"
         },
         {
@@ -216,7 +216,7 @@ export default function Home(){
         {
             "group": "소프트웨어학부",
             "title": "소프트웨어인의 밤",
-            "star": 2,
+            "star": 4,
             "review": "친구들과 좋은 시간 보냈습니다."
         }
     ]);

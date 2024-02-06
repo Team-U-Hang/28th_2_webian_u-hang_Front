@@ -8,6 +8,7 @@ import MyReviewList from "../components/MyReviewList";
 import InterestModal from "../components/InterestModal";
 import PermissionModal from "../components/PermissionModal";
 import Mycalendar from "../components/Mycalendar";
+import axios from "axios";
 
 const Wrapper = styled.div`
     width: 99vw; //부모는 뷰포트 길이로 계산됨
@@ -25,7 +26,7 @@ const Section1 = styled.div`
 `;
 
 const MyInfo = styled.div`
-    width: 400px;
+    width: 40%;
     height: 150px;
     background-color: #5F8062;
     margin-left: 150px;
@@ -39,7 +40,7 @@ const MyInfo = styled.div`
         color: white;
         font-weight: 600;
         font-size: 30px;
-        margin-left: 10%;
+        margin-left: 5%;
     }
 `;
 
@@ -99,8 +100,26 @@ export default function Mypage(){
         setPerModal(!PerModal);
     }
 
+    const [myEmail, setMyEmail] = useState(); //이메일 state
     useEffect(()=>{
         window.scrollTo(0,0);
+        const fetchData = async () => {
+            try{
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
+
+                const response = await axios.get('http://localhost:8080/mypage/my-data',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                console.log(response.data);
+                setMyEmail(response.data.MemberEmail);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
     },[]);
 
     return(
@@ -109,7 +128,7 @@ export default function Mypage(){
             <Section1>
                 <MyInfo>
                     <img src={myProfile}/>
-                    <label>2411111 님</label>
+                    <label>{myEmail} 님</label>
                 </MyInfo>
             </Section1>
             <Section2>
@@ -123,7 +142,7 @@ export default function Mypage(){
                     { PerModal ? <PermissionModal PerModal={PerModal} setPerModal={setPerModal} toggleModal2={toggleModal2}/> : ""}
                 </MyList>
                 <MyNav id="myNav">
-                    <label onClick={() => {setToggle(true)}}>이벤트 참여 목록</label>
+                    <label onClick={() => {setToggle(true)}}>찜한 이벤트 목록</label>
                     <label onClick={() => {setToggle(false)}}>나의 후기 내역</label>
                     <label onClick={toggleModal1}>관심분야 설정</label>
                     <label onClick={toggleModal2}>단체 권한 신청</label>

@@ -7,8 +7,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
 // import { data } from "../groupData";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios, { Axios } from "axios";
-import { data } from "../groupData";
+import axios from "axios";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -194,65 +193,37 @@ const Section2 = styled.div`
 
 `;
 
-// const response = {
-//     tokens: {
-//         accessToken:
-//         "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3NzdAc29va215dW5nLmFjLmtyIiwiYXV0aCI6InVoYW5nLnVoYW5nLkF1dGguQ3VzdG9tVXNlckRldGFpbHNTZXJ2aWNlQDI1NTlmNjVjIiwiaWF0IjoxNzA3MTU0ODIwLCJleHAiOjE3MDczNzA4MjB9.DfZu4WUmsMyWVY8fq03EhBN7zgCaMW5-5rwcL0x9B7s",
-//     },
-//     status: "200",
-// };
-
 export default function BoardGroup(){
 
     const navigate = useNavigate();
-
-    // const fetchData = async() => {
-    //     axios.get("http://localhost:8080/post-list/category",{
-    //         headers:{
-    //             "Content-Type": "application/json",
-    //             'Authorization': `Bearer ${response.tokens.accessToken}`,
-    //         },
-    //     })
-    //     .then((response) => {
-    //         console.log(response.data);
-    //         setData(response.data.AllPostList);
-    //     })
-    //     .catch((error) => {
-    //         console.error("에러:", error);
-    //     });
-    // }
+    const [data, setData] = useState([]);
+    const [myInterest,setMyInterest] = useState([]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
     
-    // useEffect(()=>{
-    //     const fetchData = async () => {
-    //         try{
-    //             const accessToken = localStorage.getItem("accessToken");
-    //             console.log("accessToken: " + accessToken);
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
 
-    //             // const headers = {
-    //             //     Authorization: `Bearer ${accessToken}`,
-    //             // };
+                const response = await axios.get('http://localhost:8080/post-list/category',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                setData([...response.data.AllPostList]);
+                setMyInterest([...response.data.interestCategories]);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    },[]);
 
-    //             const response = await axios.get('http://localhost:8080/post-list/category',{
-    //                 headers: {
-    //                     Authorization: `Bearer ${accessToken}`
-    //                 }
-    //             });
-    //             console.log("데이터: " + response.data);
-    //             // setData(response.data.AllPostList);
-
-    //         } catch(error){
-    //             console.error('Error fetching data:', error);
-    //         }
-    //     };
-    //     fetchData();
-    // },[]);
-
-    //id가 큰 순으로 정렬(최신순 정렬)
-    let [events, setEvents] = useState(data.sort(function(a,b){
-        if(parseInt(a.id) > parseInt(b.id)){
-            return b.id-a.id;
-        }
-    }));
+    const [events, setEvents] = useState([]);
+    useEffect(() => {
+        const sortedData = [...data].sort((a, b) => b.eventId - a.eventId);
+        setEvents(sortedData);
+    }, [data]);
 
     // 분류 목록
     const major = ["", "공과대학", "이과대학", "문과대학", "사회과학대학", "생활과학대학", "법과대학", "경상대학", "음악대학",
@@ -284,15 +255,15 @@ export default function BoardGroup(){
         let copy = [...events];
         if(sort === "latest"){
             copy.sort(function(a,b){
-                if(parseInt(a.id) > parseInt(b.id)){
-                    return b.id-a.id;
+                if(a.eventId > b.eventId){
+                    return b.eventId-a.eventId;
                 }
             });
         } 
         else if(sort === "recommend"){
             copy.sort(function(a,b){
-                if(parseInt(a.likes) > parseInt(b.likes)){
-                    return a.id-b.id;
+                if(a.totalLike > b.totalLike){
+                    return a.eventId-b.eventId;
                 }
             });
         }
@@ -307,7 +278,6 @@ export default function BoardGroup(){
     //필터링 기능을 위한 state
     const [currentCheck, setCurrentCheck] = useState([]); //체크된 항목들의 value값을 저장할 배열
     const [filteredEvents, setFilteredEvents] = useState(data);
-    const [myInterest] = useState([3,8]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
     //체크박스 이벤트 처리 함수
     const onClickCheck = target => {
         if(currentCheck.includes(target)){ //currentCheck배열에 이미 있던 값이면 배열에서 삭제
@@ -319,7 +289,7 @@ export default function BoardGroup(){
     //currentCheck에 따라 이벤트 필터링
     const eventsFilter = currentCheck => {
         const filteredData = data.filter((event) => {
-            return event.type.some((typeValue) => currentCheck.includes(typeValue));
+            return event.eventType.some((typeValue) => currentCheck.includes(typeValue));
         });
         setFilteredEvents(filteredData);
     };
@@ -335,6 +305,7 @@ export default function BoardGroup(){
             checkInterest = interest;
             alert("나의 관심분야 필터가 적용되었습니다");
             setMyInterestCheck([...interest]);
+            console.log(myInterestCheck);
         } else{
             checkInterest = [];
             alert("나의 관심분야 필터가 해제되었습니다.");
@@ -426,7 +397,7 @@ export default function BoardGroup(){
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].eventId} writer={events[i].group} title={events[i].eventTitle} apply={events[i].eventDate} period={events[i].eventLoc}/>
                                 )}
                                 </>
                             )

@@ -7,6 +7,7 @@ import EventCard from "../components/eventlist-card";
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
 import { data } from "../groupData";
+import axios from "axios";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -187,15 +188,44 @@ export default function GroupEventSearch() {
     const navigate = useNavigate();
     const params = useParams();
 
+    const [data, setData] = useState([]);
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
+
+                const response = await axios.get('http://localhost:8080/post-list/category',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                setData([...response.data.AllPostList]);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    },[]);
+
     //백에서 검색어에 대한 결과 받아와서 events 배열에 저장
     //id가 높은 순으로 정렬
-    let [events, setEvents] = useState(data.filter((item)=>{
-        return item.title.includes(params.word);
-    }).sort(function(a,b){
-        if(parseInt(a.id) > parseInt(b.id)){
-            return b.id-a.id;
-        }
-    }));
+
+    const [events, setEvents] = useState([]);
+    useEffect(() => {
+        const eventss = [...data].filter((item)=>{return item.eventTitle.includes(params.word)});
+        const sortedData = [...eventss].sort((a, b) => b.eventId - a.eventId);
+        setEvents(sortedData);
+    }, [data]);
+
+    // let [events, setEvents] = useState(data.filter((item)=>{
+    //     return item.title.includes(params.word);
+    // }).sort(function(a,b){
+    //     if(parseInt(a.id) > parseInt(b.id)){
+    //         return b.id-a.id;
+    //     }
+    // }));
     let [events2] = useState([...events]); //events를 복사
 
     // 분류 목록
@@ -208,15 +238,15 @@ export default function GroupEventSearch() {
         let copy = [...events];
         if(sort === "latest"){
             copy.sort(function(a,b){
-                if(parseInt(a.id) > parseInt(b.id)){
-                    return b.id-a.id;
+                if(parseInt(a.eventId) > parseInt(b.eventId)){
+                    return b.eventId-a.eventId;
                 }
             });
         } 
         else if(sort === "recommend"){
             copy.sort(function(a,b){
-                if(parseInt(a.likes) > parseInt(b.likes)){
-                    return a.id-b.id;
+                if(parseInt(a.totalLike) > parseInt(b.totalLike)){
+                    return a.eventId-b.eventId;
                 }
             });
         }
@@ -356,7 +386,7 @@ export default function GroupEventSearch() {
                             return(
                                 <>
                                 {showEvents && i <= eventSize-1 && (
-                                    <EventCard id={events[i].id} writer={events[i].group} title={events[i].title} apply={events[i].apply} period={events[i].period}/>
+                                    <EventCard id={events[i].eventId} writer={events[i].group} title={events[i].eventTitle} apply={events[i].eventDate} period={events[i].eventLoc}/>
                                 )}
                                 </>
                             )

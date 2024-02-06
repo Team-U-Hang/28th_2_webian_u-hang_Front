@@ -87,7 +87,41 @@ const EventBox = styled.div`
 
 export default function MyEventList(){
 
-    const [myEvents, setMyEvents] = useState([]);
+    const [myEvents, setMyEvents] = useState([{
+        "event_id": 1,
+        "event_writer":"소프트웨어학부 학생회",
+        "event_title":"소프트웨어인의 밤",
+        "event_date": "2023.11.22 ~ 2023.11.28",
+        "event_time": "18:00 ~ 21:00"
+    },
+    {
+        "event_id": 2,
+        "event_writer":"솔룩스",
+        "event_title":"최종발표회",
+        "event_date": "2024.12.08 ~ 2024.12.18",
+        "event_time": "18:00 ~ 21:00"
+    }
+    ,{
+        "event_id": 3,
+        "event_writer":"공명",
+        "event_title":"공과대학인의 밤",
+        "event_date": "2023.11.22 ~ 2023.11.28",
+        "event_time": "18:00 ~ 21:00"
+    },
+    {
+        "event_id": 4,
+        "event_writer":"총학생회",
+        "event_title":"체육대회",
+        "event_date": "2024.12.08 ~ 2024.12.18",
+        "event_time": "18:00 ~ 21:00"
+    }
+    ,{
+        "event_id": 5,
+        "event_writer":"총학생회",
+        "event_title":"개강총회",
+        "event_date": "2023.11.22 ~ 2023.11.28",
+        "event_time": "18:00 ~ 21:00"
+    }]);
     const [loading, setLoading] = useState(false); //로딩 state
 
     //페이지네이션을 위한 state
@@ -95,20 +129,20 @@ export default function MyEventList(){
     const eventIndex = (currentPage-1)*3;
     const eventSize = myEvents.length;
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/mypage/events/1');
-                setMyEvents(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-            setLoading(false);
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const response = await axios.get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/mypage/events/1');
+    //             setMyEvents(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //         setLoading(false);
+    //     };
 
-        fetchData();
-    },[]);
+    //     fetchData();
+    // },[]);
 
     return (
         <Wrapper>

@@ -5,8 +5,10 @@ import search from "../assets/search.png"
 import EventCard from "../components/eventlist-card";
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination";
-import { data } from "../groupData";
+// import { data } from "../groupData";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios, { Axios } from "axios";
+import { data } from "../groupData";
 
 const Wrapper = styled.div`
     background-color: ${COLOR.white};
@@ -192,12 +194,60 @@ const Section2 = styled.div`
 
 `;
 
+// const response = {
+//     tokens: {
+//         accessToken:
+//         "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3NzdAc29va215dW5nLmFjLmtyIiwiYXV0aCI6InVoYW5nLnVoYW5nLkF1dGguQ3VzdG9tVXNlckRldGFpbHNTZXJ2aWNlQDI1NTlmNjVjIiwiaWF0IjoxNzA3MTU0ODIwLCJleHAiOjE3MDczNzA4MjB9.DfZu4WUmsMyWVY8fq03EhBN7zgCaMW5-5rwcL0x9B7s",
+//     },
+//     status: "200",
+// };
+
 export default function BoardGroup(){
 
     const navigate = useNavigate();
 
-    // 이벤트 목록(백에서 받아와야 됨)
-    // id가 큰 순으로 정렬(최신순 정렬)
+    // const fetchData = async() => {
+    //     axios.get("http://localhost:8080/post-list/category",{
+    //         headers:{
+    //             "Content-Type": "application/json",
+    //             'Authorization': `Bearer ${response.tokens.accessToken}`,
+    //         },
+    //     })
+    //     .then((response) => {
+    //         console.log(response.data);
+    //         setData(response.data.AllPostList);
+    //     })
+    //     .catch((error) => {
+    //         console.error("에러:", error);
+    //     });
+    // }
+    
+    // useEffect(()=>{
+    //     const fetchData = async () => {
+    //         try{
+    //             const accessToken = localStorage.getItem("accessToken");
+    //             console.log("accessToken: " + accessToken);
+
+    //             // const headers = {
+    //             //     Authorization: `Bearer ${accessToken}`,
+    //             // };
+
+    //             const response = await axios.get('http://localhost:8080/post-list/category',{
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`
+    //                 }
+    //             });
+    //             console.log("데이터: " + response.data);
+    //             // setData(response.data.AllPostList);
+
+    //         } catch(error){
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
+    //     fetchData();
+    // },[]);
+
+    //id가 큰 순으로 정렬(최신순 정렬)
     let [events, setEvents] = useState(data.sort(function(a,b){
         if(parseInt(a.id) > parseInt(b.id)){
             return b.id-a.id;
@@ -257,7 +307,7 @@ export default function BoardGroup(){
     //필터링 기능을 위한 state
     const [currentCheck, setCurrentCheck] = useState([]); //체크된 항목들의 value값을 저장할 배열
     const [filteredEvents, setFilteredEvents] = useState(data);
-    const [myInterest] = useState([3]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
+    const [myInterest] = useState([3,8]) //임의로 주어진 값. 백엔드에서 받아와야 됨.
     //체크박스 이벤트 처리 함수
     const onClickCheck = target => {
         if(currentCheck.includes(target)){ //currentCheck배열에 이미 있던 값이면 배열에서 삭제

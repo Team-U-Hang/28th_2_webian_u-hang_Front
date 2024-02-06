@@ -87,7 +87,7 @@ const Login = () => {
                         <input type="text" placeholder="ID" value={inputEmail} onChange={handleInputEmail} />
                     </div>
                     <div className="login_input">
-                        <input type="text" placeholder="PW" value={inputPw} onChange={handleInputPw} />
+                        <input type="password" placeholder="PW" value={inputPw} onChange={handleInputPw} />
                     </div>
 
                 </div>

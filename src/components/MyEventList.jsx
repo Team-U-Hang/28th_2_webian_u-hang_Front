@@ -68,6 +68,11 @@ const EventBox = styled.div`
             margin-top: 1%;
             font-size: 1.2rem;
             font-weight: 700;
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             font-family: 'S-CoreDream-3Bold';
             color: #292929;
         }
@@ -87,41 +92,43 @@ const EventBox = styled.div`
 
 export default function MyEventList(){
 
-    const [myEvents, setMyEvents] = useState([{
-        "event_id": 1,
-        "event_writer":"소프트웨어학부 학생회",
-        "event_title":"소프트웨어인의 밤",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00"
-    },
-    {
-        "event_id": 2,
-        "event_writer":"솔룩스",
-        "event_title":"최종발표회",
-        "event_date": "2024.12.08 ~ 2024.12.18",
-        "event_time": "18:00 ~ 21:00"
-    }
-    ,{
-        "event_id": 3,
-        "event_writer":"공명",
-        "event_title":"공과대학인의 밤",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00"
-    },
-    {
-        "event_id": 4,
-        "event_writer":"총학생회",
-        "event_title":"체육대회",
-        "event_date": "2024.12.08 ~ 2024.12.18",
-        "event_time": "18:00 ~ 21:00"
-    }
-    ,{
-        "event_id": 5,
-        "event_writer":"총학생회",
-        "event_title":"개강총회",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00"
-    }]);
+    const [myEvents, setMyEvents] = useState([]);
+
+    // const [myEvents, setMyEvents] = useState([{
+    //     "event_id": 1,
+    //     "event_writer":"소프트웨어학부 학생회",
+    //     "event_title":"소프트웨어인의 밤",
+    //     "event_date": "2023.11.22 ~ 2023.11.28",
+    //     "event_time": "18:00 ~ 21:00"
+    // },
+    // {
+    //     "event_id": 2,
+    //     "event_writer":"솔룩스",
+    //     "event_title":"최종발표회",
+    //     "event_date": "2024.12.08 ~ 2024.12.18",
+    //     "event_time": "18:00 ~ 21:00"
+    // }
+    // ,{
+    //     "event_id": 3,
+    //     "event_writer":"공명",
+    //     "event_title":"공과대학인의 밤",
+    //     "event_date": "2023.11.22 ~ 2023.11.28",
+    //     "event_time": "18:00 ~ 21:00"
+    // },
+    // {
+    //     "event_id": 4,
+    //     "event_writer":"총학생회",
+    //     "event_title":"체육대회",
+    //     "event_date": "2024.12.08 ~ 2024.12.18",
+    //     "event_time": "18:00 ~ 21:00"
+    // }
+    // ,{
+    //     "event_id": 5,
+    //     "event_writer":"총학생회",
+    //     "event_title":"개강총회",
+    //     "event_date": "2023.11.22 ~ 2023.11.28",
+    //     "event_time": "18:00 ~ 21:00"
+    // }]);
     const [loading, setLoading] = useState(false); //로딩 state
 
     //페이지네이션을 위한 state
@@ -129,24 +136,31 @@ export default function MyEventList(){
     const eventIndex = (currentPage-1)*3;
     const eventSize = myEvents.length;
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const response = await axios.get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/mypage/events/1');
-    //             setMyEvents(response.data);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //         setLoading(false);
-    //     };
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                setLoading(true);
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
 
-    //     fetchData();
-    // },[]);
+                const response = await axios.get('http://localhost:8080/mypage/my-data',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                console.log(response.data);
+                setMyEvents([...response.data.likedPosts]);
+                setLoading(false);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    },[]);
 
     return (
         <Wrapper>
-            <label className="eventList">이벤트 참여 목록</label>
+            <label className="eventList">찜한 이벤트 목록</label>
             <EventListBox>
                 {
                     loading? <h2 className="noEvents">로딩 중...</h2> : 
@@ -155,11 +169,11 @@ export default function MyEventList(){
                         (
                             myEvents.slice(eventIndex, eventIndex + 3).map((event, i) => (
                                 <MyEvent key={eventIndex + i}
-                                    group={event.event_writer}
-                                    title={event.event_title}
-                                    date={event.event_date}
-                                    time={event.event_time}
-                                    id={event.event_id}/>
+                                    group={event.eventLoc}
+                                    title={event.eventTitle}
+                                    date={event.eventDate}
+                                    time={event.eventTime}
+                                    id={event.eventId}/>
                             ))
                         )
                     )
@@ -180,8 +194,8 @@ function MyEvent(props){
             <div>
                 <label className="group">{props.group}</label>
                 <label className="title">{props.title}</label>
-                <label className="apply">운영: {props.date}</label>
-                <label className="period">시간: {props.time}</label>
+                <label className="apply">날짜: {props.date}</label>
+                <label className="period">시간: {props.time[0]} : {props.time[1]}</label>
             </div>
         </EventBox>
     )

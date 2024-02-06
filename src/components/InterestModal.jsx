@@ -130,20 +130,28 @@ export default function InterestModal(props){
                     "약학대학", "미술대학", "기초교양대학", "글로벌융합대학", "글로벌서비스학부", "영어영문학부", "미디어학부", "동아리"];
 
     //기존 관심사 받아오기
-    const [myInterest, setMyInterest] = useState([3,8]); //백에서 받아와야 됨
-    const [newInterest, setNewInterest] = useState([3,8]); //새로운 관심사를 저장할 state
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/interest');
-    //             setMyInterest(response.data.my_interest);
-    //             setNewInterest([...response.data.my_interest]);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //     };
-    //     fetchData();
-    // },[]);
+    const [myInterest, setMyInterest] = useState([]); //백에서 받아와야 됨
+    const [newInterest, setNewInterest] = useState([]); //새로운 관심사를 저장할 state
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
+
+                const response = await axios.get('http://localhost:8080/mypage/my-data',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                setMyInterest([...response.data.interestCategories]);
+                setNewInterest([...response.data.interestCategories]);
+                console.log(response.data);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    },[]);
 
     // const [newInterest, setNewInterest] = useState([...myInterest]); //체크되면 추가해줄 배열(완료 버튼 누르면 이 배열을 백으로 전송
     const onClickCheck = target => {
@@ -156,8 +164,13 @@ export default function InterestModal(props){
     
     //백으로 업데이트된 관심사 post
     const update = async() => {
-        await axios.post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/interest-update',{
-            my_interest: newInterest,
+        console.log(newInterest);
+        const accessToken = localStorage.getItem("accessToken");
+        console.log(accessToken);
+        await axios.post('http://localhost:8080/interest-category/save',newInterest,{
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
         })
         .then(()=>{
             console.log("well done!");

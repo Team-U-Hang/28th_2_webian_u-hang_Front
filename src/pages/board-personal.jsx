@@ -228,7 +228,7 @@ export default function BoardPersonal(){
             </Section1>
             <Section2>
                 <div>
-                    <button onClick={()=>{navigate("/event-register")}}>등록</button>
+                    <button onClick={()=>{navigate("/event-register-personal")}}>등록</button>
                 </div>
                 <label id="word">
                     {events.length===0 ? `해당하는 이벤트가 없습니다` : ``}

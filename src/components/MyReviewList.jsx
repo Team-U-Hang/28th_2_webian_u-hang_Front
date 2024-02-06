@@ -69,6 +69,11 @@ const ReviewBox = styled.div`
             margin-top: 1%;
             font-size: 1.2rem;
             font-family: 'S-CoreDream-3Bold';
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         .star{
             display: flex;
@@ -83,46 +88,7 @@ const ReviewBox = styled.div`
 
 export default function MyReviewList(){
 
-    const [myReviews, setMyReviews] = useState([{
-        "event_id": 1,
-        "event_writer":"소프트웨어학부 학생회",
-        "event_title":"소프트웨어인의 밤",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00",
-        "totalLikes": 4
-    },
-    {
-        "event_id": 2,
-        "event_writer":"솔룩스",
-        "event_title":"최종발표회",
-        "event_date": "2024.12.08 ~ 2024.12.18",
-        "event_time": "18:00 ~ 21:00",
-        "totalLikes": 5
-    }
-    ,{
-        "event_id": 3,
-        "event_writer":"공명",
-        "event_title":"공과대학인의 밤",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00",
-        "totalLikes": 4
-    },
-    {
-        "event_id": 4,
-        "event_writer":"총학생회",
-        "event_title":"체육대회",
-        "event_date": "2024.12.08 ~ 2024.12.18",
-        "event_time": "18:00 ~ 21:00",
-        "totalLikes": 3
-    }
-    ,{
-        "event_id": 5,
-        "event_writer":"총학생회",
-        "event_title":"개강총회",
-        "event_date": "2023.11.22 ~ 2023.11.28",
-        "event_time": "18:00 ~ 21:00",
-        "totalLikes": 4
-    }]);
+    const [myReviews, setMyReviews] = useState([]);
     const [loading, setLoading] = useState(false);
 
     //페이지네이션을 위한 state
@@ -130,23 +96,28 @@ export default function MyReviewList(){
     const reviewIndex = (currentPage-1)*4;
     const reviewSize = myReviews.length;
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const response = await axios.get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/mypage/events/1');
-    //             setMyReviews(response.data);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //         setLoading(false);
-    //     };
-    //     fetchData();
-    // },[]);
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                setLoading(true);
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
 
-    // useEffect(()=>{
-    //     console.log(loading);
-    // },[loading]);
+                const response = await axios.get('http://localhost:8080/mypage/my-data',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                setMyReviews([...response.data.myComments]);
+                setLoading(false);
+            } catch(error){
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    },[]);
+
+    console.log(myReviews);
 
     return (
         <Wrapper>
@@ -159,10 +130,10 @@ export default function MyReviewList(){
                         (
                             myReviews.slice(reviewIndex, reviewIndex+4).map((review,i) => (
                                 <MyReview key={reviewIndex+i}
-                                    group={review.event_writer}
-                                    title={review.event_title}
-                                    id={review.event_id}
-                                    likes={review.totalLikes}/>
+                                    group={review.post.eventLoc}
+                                    title={review.post.eventTitle}
+                                    id={review.post.eventId}
+                                    likes={review.reviewRate}/>
                             ))
                         )
                     )

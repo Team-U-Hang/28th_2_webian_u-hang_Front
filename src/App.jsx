@@ -29,7 +29,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/event-detail/:eventId",
-    element: <EventDetail/>
+    element: <Event/>
   },
   {
     path: "/event-detail-personal",

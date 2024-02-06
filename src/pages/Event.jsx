@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import COLOR from '../utils/color';
 import NavBar from "../components/navBar";
 import StarRating from '../components/StarRating';
@@ -16,6 +16,9 @@ const Event = () => {
 //   const location = useLocation();
 //   const {board} = location.state; // board 추출 후 사용
 
+  const params = useParams();
+  console.log(params.eventId);
+
  //기존 관심사 받아오기
   const [board, setBoard] = useState({
     groupId: '',
@@ -30,25 +33,29 @@ const Event = () => {
   }); 
 
   useEffect(() => {
+      window.scrollTo(0,0);
       const fetchData = async () => {
           try {
-              const response = await axios
-                .get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/interest'+ "/event-detail/"/* +  {event_id}*/);
+                const accessToken = localStorage.getItem("accessToken");
+                console.log("accessToken: " + accessToken);
 
-              console.log('groupPeriod:', board.groupPeriod);
-              console.log('groupUploadtime:', board.groupUploadtime);
+                const response = await axios.get(`http://localhost:8080/post/${params.eventId}`,{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
 
-
+                console.log(response.data);
 
               setBoard((prevBoard) => ({
                 ...prevBoard,
-                groupId: response.data.groupId,
-                groupTitle: response.data.groupTitle,
-                groupTime: response.data.groupTime,
-                groupPeriod: new Date(response.data.groupPeriod),
-                groupLocation: response.data.groupLocation,
-                groupField: response.data.groupField,
-                groupContents: response.data.groupContents,
+                groupId: response.data.eventId,
+                groupTitle: response.data.eventTitle,
+                groupTime: response.data.eventTime,
+                groupPeriod: new Date(response.data.eventDate),
+                groupLocation: response.data.eventLoc,
+                groupField: response.data.eventType,
+                groupContents: response.data.eventText,
                 groupImage: response.data.groupImage,
                 /* groupUploadtime: response.data.groupUploadtime ? new Date(response.data.groupUploadtime) : null */
             }));
@@ -59,6 +66,9 @@ const Event = () => {
       };
       fetchData();
   },[]);
+
+  console.log("board");
+  console.log(board);
 
   /* const [rating, setRating] = useState(null); */
   const [showDetail, setShowDetail] = useState(true); // 토글용 변수
@@ -374,13 +384,13 @@ const handleLikeClick = () => {
               />
             )}
             <div style={textContainer}>
-              <h2>소프트웨어인의 밤</h2>
-              <br /> {board.groupId}
-              기간 &nbsp; 2024-12-17<br />
+              <h2>{board.groupTitle}</h2>
               <br />
-              시간 &nbsp; 20:00<br />
+              날짜 &nbsp; <br />
               <br />
-              장소 &nbsp; 숙명여자대학교<br />
+              시간 &nbsp; {board.groupTime[0]} : {board.groupTime[1]}<br />
+              <br />
+              장소 &nbsp; {board.groupLocation}<br />
               <br />
               분야 &nbsp; 
                   <span style={fieldItem}>
@@ -395,7 +405,6 @@ const handleLikeClick = () => {
                 {likeStatus ? "찜취소" : "찜하기"}
               </button>
               <div style={{display:'column', color: 'grey', fontSize: '14px', marginTop: '10px', justifyContent: 'flex-end'}}>
-              {uploadTime}
               </div>
             </div>
           </div>
@@ -417,8 +426,7 @@ const handleLikeClick = () => {
 
         {showDetail ? (
           <div style={contentstyle}>
-            2024 소프트웨어인의 밤 <br/>
-            정말 재밌게 놀아봐요
+            {board.groupContents}
             {/* {board.groupContents.split('\n').map((paragraph, index) => (
               <div key={index}>{paragraph} <br /></div>
             ))} */}

@@ -30,7 +30,7 @@ const CheckboxWrapper = styled.input`
   }
 `;
 
-const EventRegisterC = () => {
+const EventRegister = () => {
 
   const navigate = useNavigate();
 
@@ -448,4 +448,4 @@ const EventRegisterC = () => {
   );
 };
 
-export default EventRegisterC;
+export default EventRegister;

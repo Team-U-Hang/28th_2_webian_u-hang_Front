@@ -68,49 +68,33 @@ const EventRegister = () => {
     16: '동아리',
   };
 
-     const registerAll = async() => {
-      try{
-        const accessToken = localStorage.getItem('accessToken')
-        console.log('토큰:',accessToken)
+  const registerAll = async () => {
+
+    const accessToken = localStorage.getItem('accessToken')
         const headers = {
           'Authorization': `Bearer ${accessToken}`,
-          /* 'Content-type': 'application/json' */
+          'Content-type': 'application/json'
         };
         console.log('토큰:',accessToken)
-        const response = await axios.post('http://localhost:8080/posting' ,
-              
-              setBoard( () => ({
-                event_title: groupTitle,
-                event_time: groupTime,
-                event_date: groupPeriod,
-                event_loc: groupLocation,
-                event_type: groupField,
-                event_text: groupContents,
-                /* image_url: groupImage, */
-                timestamp: groupUploadtime
-              })),
-              {headers}
-              );
-
-              /*  */
-            
-              console.log("전달 완료",response.data);
-              alert('내용조회'+response.data);
-        }
-      catch(error){
-        if (error.response) {
-          // 서버 응답은 왔지만 에러 응답이 있는 경우
-          console.log('error', error.response);
-        } else if (error.request) {
-          // 서버 응답이 없는 경우 (요청이 전송되지 않았거나 응답이 없는 경우)
-          console.log('error', error.request);
-        } else {
-          // 기타 다른 에러가 있는 경우
-          console.log('error', error.message);
-        }
-        alert('잘못됨');
-      }
-    }; 
+    await axios.post('http://localhost:8080/posting', {
+        event_title: board.groupTitle,
+        event_time: board.groupTime,
+        event_date: board.groupPeriod,
+        event_loc: board.groupLocation,
+        event_type: board.groupField,
+        event_text: board.groupContents,
+        image_url: board.groupImage,
+        timestamp: board.groupUploadtime
+      }, {headers})
+      .then((res)=>{
+         console.log('Post sent', res.data);
+         navigate(`/event-detail/${res.data}`)
+      })
+      
+      .catch((error) => {
+      console.error('Error', error);
+    })
+  };
 
   const onChange = (event) => {
     const { value, name, type, checked } = event.target;
@@ -204,10 +188,9 @@ const EventRegister = () => {
 
     console.log('등록되었습니다.', board);
 
-    /* registerAll(); */
+    registerAll();
     alert("데이터가 전송 완료되었습니다");
-
-    navigate('/event-detail', { state: { board } });
+    navigate('/event-detail');
  
   };
 

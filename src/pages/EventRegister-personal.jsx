@@ -15,7 +15,6 @@ const SDatePicker = styled(DatePicker)`
     border-color: #3A4D39;
   `;
 
-
 const EventRegister = () => {
 
   const navigate = useNavigate();

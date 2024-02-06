@@ -11,7 +11,7 @@ import axios from "axios";
 
 const EventDetail = () => {
 
-  const [visible, setVisible] = useState(false); //글자 바뀌기용
+  const [visible, setVisible] = useState(false); //글자 변경
   const [likeStatus, setLikeStatus] = useState(false); // 찜하기 여부 저장 변수
   const location = useLocation();
   const {board} = location.state; // board 추출 후 사용
@@ -27,18 +27,16 @@ const EventDetail = () => {
     groupContents: '',
     groupImage: '',
     groupUploadtime: new Date()
-  }); //백에서 */
+  }); //백 */
 
   useEffect(() => {
       const fetchData = async () => {
           try {
               const response = await axios
-                .get('http://localhost:8080/post' /*+  {event_id}*/);
+                .get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io/interest'+ "/event-detail/"/* +  {event_id}*/);
 
               console.log('groupPeriod:', board.groupPeriod);
               console.log('groupUploadtime:', board.groupUploadtime);
-
-              
 
               setBoard((prevBoard) => ({
                 ...prevBoard,
@@ -67,17 +65,17 @@ const EventDetail = () => {
   const [review, setReview] = useState(); // 후기 입력 관리 변수_입력하고 등록할 때마다 초기화
   const [feedReviews, setFeedReviews] = useState([]); // 후기 목록 저장 변수_새로운 후기 계속 담김
   const [isValid, setIsValid] = useState(false); // 후기 유효 상태 확인 변수
-/*   const [reviewId, setReviewId] = useState(1); // 초기값은 1 //이것도..넘겨주시는건가..? */
-  
+  const [reviewId, setReviewId] = useState(1); // 초기값은 1 //이것도..넘겨주시는건가..?
+
 
 
   //작성한 후기 전송
-
+   /*  useEffect(() => { */
       const regReview = async() => {
         try{
           const response = await axios
-            .post('http://localhost:8080/post' /*+  {event_id} + '/postingReview' */,{
-            /* review_id: reviewId, */
+            .post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io',{
+            review_id: reviewId,
             my_rev_text: review,
             my_rev_rate: userRating,
           });
@@ -88,14 +86,15 @@ const EventDetail = () => {
           alert('리뷰 등록X');
       }
     };
-
+  /*   regReview();
+  }) */
 
   // 후기 목록 받기
-  
+  useEffect(() => {
     const reviewData = async () => {
       try {
         const response = await axios
-          .get('http://localhost:8080/post' /*+  {event_id} + '/gettingReview' */);
+          .get('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io'+ "/event-detail/"/* +  {event_id}*/);
 
           setFeedReviews((prevReviews) => ({
             ...prevReviews,
@@ -107,21 +106,24 @@ const EventDetail = () => {
             console.error('후기 못 받음', error.response);
         }
     };
- 
+    reviewData();
+  },[]);
 
 // 찜 여부 전송
+useEffect(() => {
   const sendLikeStatus = async (likestatus) => {
     try {
-      const response = await axios
-        .post('http://localhost:8080/post' /*+  {event_id}*/, {
-          event_id: board.groupId, 
-          is_register: likestatus,
-        });
+      const response = await axios.post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io', {
+        event_id: board.groupId, 
+        is_register: likestatus,
+      });
       console.log('찜 전송', response.data);
-    } catch (error) { 
+    } catch (error) {
       console.error('Error sending like status:', error.response);
     }
   };
+  sendLikeStatus();
+},[]);
 
 const handleLikeClick = () => {
   const newLikeStatus = !likeStatus;
@@ -135,36 +137,28 @@ const handleLikeClick = () => {
       alert('별점을 선택해주세요.');
       return;
     }
-
     // 새 후기 객체 생성
     const newReview = {
       rating: userRating,
       text: review,
     };
 
-    //후기 등록
-    regReview();
-    
     setReviewId((prevId) => prevId + 1);
-  
+
     //기존 목록에 추가 + 추천수 0
     setFeedReviews(prevReviews => [...prevReviews, newReview]);
     setRecommends(prevRecommends => [
       ...prevRecommends,
       { count: 0 },
     ]);
-
-    //후기 목록 받아오기
-    reviewData();
-
     //추가 후 후기 및 별점 초기화
     setReview('');
     setUserRating(null);
 
     registerReview(newReview);
   };
-  
-  
+
+
   const calculateAverageRating = (reviews) => { // 후기에서 평점 계산 함수
 
     //후기가 없을 경우 0 반환
@@ -174,10 +168,8 @@ const handleLikeClick = () => {
     //평점 계산
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     const averageRating = totalRating / reviews.length;
-
     return averageRating;
   };
-
   //전체 평점
   const averageRating = calculateAverageRating(feedReviews);
 
@@ -190,15 +182,15 @@ const handleLikeClick = () => {
     try {
       const updatedRecommends = [...recommends];
       const currentReview = updatedRecommends[reviewIndex];
-  
-      // 추천은 1번만 가능
+
+      /* // 추천은 1번만 가능
       if (!currentReview.isRecommended) {
         // 서버로 추천 여부 전송
         await axios.post('https://3002977a-a5eb-412a-af38-97496707f6f7.mock.pstmn.io', {
           review_id: reviewIndex,
           is_comment_like: true,
         });
-  
+
         // 상태 업데이트
         updatedRecommends[reviewIndex] = {
           ...currentReview,
@@ -208,8 +200,14 @@ const handleLikeClick = () => {
         console.log('서버 응답:', '성공');
       } else {
         alert("이미 추천한 후기입니다.");
+      } */
+      if (!currentReview.isRecommended) {
+        currentReview.count += 1;
+        currentReview.isRecommended = true;
+      } else {
+        alert("이미 추천함");
       }
-  
+
       // 상태 업데이트
       setRecommends(updatedRecommends);
     } catch (error) {
@@ -243,7 +241,6 @@ const handleLikeClick = () => {
     justifyContent: 'center',
     minHeight: '100vh',
   };
-
   const content = {
     backgroundColor: COLOR.white,
     width: '80%',
@@ -252,20 +249,17 @@ const handleLikeClick = () => {
     alignItems: 'center',
     justifyContent: 'center',
   };
-
   const header = {
     display: 'flex',
     flexDirection: 'column',
     padding: '10px',
     marginLeft:'20px'
   };
-
   const image = {
     padding: '20px 20px 30px 200px',
     width: '320px',
     height: '350px',
   };
-
   const textContainer = {
     padding: '50px 10px 0px 10px',
     flexDirection: 'column',
@@ -273,12 +267,10 @@ const handleLikeClick = () => {
     justifyContent: 'flex-start',
     textAlign: 'left'
   };
-
   const buttonContainer = {
     display: 'flex',
     justifyContent: 'center',
   };
-
   const button = {
     backgroundColor: COLOR.white,
     color: COLOR.green,
@@ -307,12 +299,10 @@ const handleLikeClick = () => {
     padding: '3px 7px',
     margin: '2px'
   };
-
   const hover = {
     backgroundColor: COLOR.green,
     color: COLOR.white,
   };
-
   const averageStar = {
     margin: '0px 10% 20px 10%',
     paddingBottom: '20px',
@@ -322,17 +312,15 @@ const handleLikeClick = () => {
     display: 'flex', 
     justifyContent: 'center'
   };
-
   const reviewbutton = {
     ...button,
     ...button2,
-    position: 'absolute',
+    /* position: 'absolute', */
     /* top: '74%',
     left: '52%', */
     zIndex: '2',
-    marginLeft: '20px', top:'50%'
+    marginLeft: '20px', /* top:'50%' */
   };
-
   const writereview = { 
     display: 'flex', 
     justifyContent: 'center', 
@@ -341,13 +329,11 @@ const handleLikeClick = () => {
     padding: '1% 4%',
     borderBottom: `2px solid ${COLOR.green}` 
   };
-
   const contentstyle = {
     justifyContent:'flex-start', 
     paddingLeft:'10%',
     paddingRight: '10%'
   };
-
   const reviewtextarea = { 
     width: '80%', 
     padding: '15px 10px', 
@@ -400,7 +386,7 @@ const handleLikeClick = () => {
                     {fieldIds[fieldId]}
                   </span>
               ))}<br />
-              
+
               <button 
                 style={{...button, ...button2}} 
                 onClick={handleLikeClick}
@@ -413,7 +399,6 @@ const handleLikeClick = () => {
             </div>
           </div>
         </div>
-
         <div style={buttonContainer}>
           <button
             style={{ ...button, ...(showDetail && hover), borderRadius: '7px 0 0 0'}}
@@ -447,9 +432,7 @@ const handleLikeClick = () => {
             </div>
             <div style={averageStar}>
               {averageRating.toFixed(1)}/5 
-
             </div>
-
             {setReview && (
               <div>
                 <div style={{margin:'0% 10%', display: 'flex'}}>
@@ -544,5 +527,4 @@ const handleLikeClick = () => {
     </div>
   );
 };
-
 export default EventDetail;
